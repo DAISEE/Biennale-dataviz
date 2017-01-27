@@ -10,17 +10,29 @@ const pines = {
   },
 };
 
-var matrix;
-var worker = new Worker('/static/js/worker.js');
-worker.onmessage = e => {
-	matrix = e.data;
-  // D3 call
-};
-worker.postMessage({
+const workerParameters = {
   pines: pines,
   intervalTime: 20000, // 20 secondes,
   intervalNbValues: 4,
-})
+}
+
+// matrix defaults values
+var matrix = [
+  //  I  P  F  0
+  [0, 1, 1, 1], // Imobil
+  [2, 0, 0, 0], // PowerP
+  [1, 0, 0, 0], // ForestDAO
+  [1, 0, 0, 0]  // Oeuvre4
+];
+
+var worker = new Worker('/static/js/worker.js');
+worker.onmessage = e => {
+  console.log(e.data);
+	matrix = e.data;
+  // D3 call
+};
+
+worker.postMessage(workerParameters);
 
 /* D3 main */
 
@@ -36,14 +48,6 @@ var svg = d3.select("#chart")
 
 
 var range5 = ["#E6E2AF", "#B0CC99", "#E1E6FA", "#9E8479"];
-
-/*var matrix = [
- //  I  P  F  0
-    [0, 1, 1, 1], // Imobil
-    [2, 0, 0, 0], // PowerP
-    [1, 0, 0, 0], // ForestDAO
-    [1, 0, 0, 0]  // Oeuvre4
-];*/
 
 var chord = d3.layout.chord()
         .padding(.1)

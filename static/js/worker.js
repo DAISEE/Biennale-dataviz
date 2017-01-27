@@ -62,7 +62,7 @@ const getEnergySum = (params, cb) => {
   .then(err => { console.log(`Request Failed ${err}`) })
 }
 
-// onmessage worker 
+// main
 /*
 @params = {
   pines
@@ -70,12 +70,11 @@ const getEnergySum = (params, cb) => {
   intervalNbValues,
 }
 */
-
-onmessage = e => {
-  let params = e.data, matrix = [];
+const main = params => {
   const pinesNames = Object.keys(params.pines);
   const pinesLength = pinesNames.length;
-  postMessage([1,2,3])
+  let matrix = [];
+
   pinesNames.forEach((pine, indexNum) => {
     const dataTime = `login=${params.pines[pine].login}&password=${params.pines[pine].password}`;
     const promiseDateTime = (resolve, reject) => {
@@ -107,6 +106,7 @@ onmessage = e => {
               matrix.push(reslist);
               if (indexNum === pinesLength - 1) {
                 postMessage(matrix); // send matrix and call D3
+                main(params);
               }
               reslist = []; // reset reslist  
             }
@@ -116,4 +116,9 @@ onmessage = e => {
       
     });
   });
+};
+
+// onmessage worker 
+onmessage = e => {
+  main(e.data);
 }
