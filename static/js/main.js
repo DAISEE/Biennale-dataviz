@@ -1,49 +1,29 @@
 'use strict';
 
-const pine1 = {
-  url: 'http://192.168.0.40:8080',
-  sensorId: 1;
-}
+// pines parameters
+const pines = {
+  pine2 : {
+    url: 'http://192.168.0.49:8080',
+    sensorId: 1,
+    login: 'pi',
+    password: 'pi',
+  },
+};
 
-const dataTime = Date.now();
-const t0 = dataTime + 500;
-const t1 = t0 + 500;
-
-// (foreach) pine list callback item
-const fetchDataPine = (apiURL, sensorId) => {
-    /* Worker - fetch data on CitizenWatt-API*/
-    let worker, iReq, intervalTime, intervalNbReq, reslist;
-
-    iReq = 0;
-    intervalTime = 1000; // 1 seconde
-    intervalNbReq = 4;
-    reslist = [];
-
-    worker = new Worker('/static/js/worker.js');
-    worker.onmessage = sumEnergy => {
-    	reslist.push(sumEnergy);
-        iReq++;
-        if (iReq % intervalNbReq === 0) {
-            // here call D3 with reslist
-            reslist = []; // reset reslist  
-        }
-    };
-
-    setInterval(() => {
-      worker.postMessage({
-        apiURL: apiURL, 
-        dataTime: dataTime, 
-        t0: t0, 
-        t1: t1, 
-        sensorId: sensorId
-      }); 
-    }, intervalTime);
-}
-
-// call callback item for pine1 (test)
-fetchDataPine(pine1.url, pine1.sensorId);
+var matrix;
+var worker = new Worker('/static/js/worker.js');
+worker.onmessage = e => {
+	matrix = e.data;
+  // D3 call
+};
+worker.postMessage({
+  pines: pines,
+  intervalTime: 20000, // 20 secondes,
+  intervalNbValues: 4,
+})
 
 /* D3 main */
+
 var width  = 750;
 var height = 700;
 
@@ -54,14 +34,16 @@ var svg = d3.select("#chart")
         .append("g")
         .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
-var matrix = [
+
+var range5 = ["#E6E2AF", "#B0CC99", "#E1E6FA", "#9E8479"];
+
+/*var matrix = [
  //  I  P  F  0
     [0, 1, 1, 1], // Imobil
     [2, 0, 0, 0], // PowerP
     [1, 0, 0, 0], // ForestDAO
     [1, 0, 0, 0]  // Oeuvre4
-];
-var range5 = ["#E6E2AF", "#B0CC99", "#E1E6FA", "#9E8479"];
+];*/
 
 var chord = d3.layout.chord()
         .padding(.1)
