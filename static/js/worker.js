@@ -49,7 +49,8 @@ const getEnergySum = (params, cb) => {
     body: data
   })
   .then(res => res.json())
-  .then(data => {
+  .then(json => {
+    let data = json.data;
     data.forEach(item => {
       if (timestp < item.timestamp) {
         let watt = item.value / 100;
@@ -94,7 +95,6 @@ const main = params => {
       setInterval(() => {
         pTime1.then(json => {
           let time1 = json.data;
-
           getEnergySum({
             pineURL: params.pines[pine].url, 
             dataTime: dataTime, 

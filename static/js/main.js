@@ -4,6 +4,7 @@
 const pines = {
   pine2 : {
     url: 'http://192.168.0.49:8080',
+    //url: 'http://localhost:8080',
     sensorId: 1,
     login: 'pi',
     password: 'pi',
@@ -12,7 +13,7 @@ const pines = {
 
 const workerParameters = {
   pines: pines,
-  intervalTime: 20000, // 20 secondes,
+  intervalTime: 5000, // 20 secondes,
   intervalNbValues: 4,
 }
 
@@ -27,7 +28,6 @@ var matrix = [
 
 var worker = new Worker('/static/js/worker.js');
 worker.onmessage = e => {
-  console.log(e.data);
 	matrix = e.data;
   // D3 call
 };
