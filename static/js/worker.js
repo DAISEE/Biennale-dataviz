@@ -88,10 +88,13 @@ const main = params => {
     let pTime1 = new Promise(promiseDateTime);
     let iReq = 0, reslist = [];
 
-    pTime0.then(time0 => {
+    pTime0.then(json => {
+      let time0 = json.data;
 
       setInterval(() => {
-        pTime1.then(time1 => {
+        pTime1.then(json => {
+          let time1 = json.data;
+          
           getEnergySum({
             pineURL: params.pines[pine].url, 
             dataTime: dataTime, 
