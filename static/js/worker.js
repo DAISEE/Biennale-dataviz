@@ -20,7 +20,7 @@ const getDateTime = (params, cb) => {
   })
   .then(res => res.json())
   .then(cb)
-  .then(err => { console.log(`Request Failed ${err}`) })
+  .catch(err => { console.log(`Request Failed ${err}`) })
 }   
 
 // getEnergySum in dz_interaction.py of https://github.com/DAISEE/Scripts
@@ -59,7 +59,7 @@ const getEnergySum = (params, cb) => {
     });
     cb(sumEnergy);
   })
-  .then(err => { console.log(`Request Failed ${err}`) })
+  .catch(err => { console.log(`Request Failed ${err}`) })
 }
 
 // main
@@ -94,7 +94,7 @@ const main = params => {
       setInterval(() => {
         pTime1.then(json => {
           let time1 = json.data;
-          
+
           getEnergySum({
             pineURL: params.pines[pine].url, 
             dataTime: dataTime, 
