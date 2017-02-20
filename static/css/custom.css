@@ -9,7 +9,14 @@ body{
     padding-top: 20px;
 }
 .starter-template {
-  padding: 40px 15px;
-  text-align: center;
-  min-height: 100vh;
+    padding: 40px 15px;
+    text-align: center;
+    min-height: 100vh;
+}
+#map{
+    width: "auto";
+    height: 700px;
+}
+#oeuvre{
+    height: 75vh;
 }
