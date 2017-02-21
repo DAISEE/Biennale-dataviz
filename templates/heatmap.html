@@ -79,25 +79,27 @@
         (function(){
             $.getJSON('http://127.0.0.1:5000/get_data/', function (data) {
 
-                console.log(data);
                 var json = JSON.stringify(data.result);
-                console.log(json);
                 var items = JSON.parse(json);
-                console.log(items)
-                console.log(items[0].value)
-                console.log(items[1].value)
 
                 var map = L.map('map').setView([45.45114, 4.38660], 18);
+
                 L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                     maxZoom: 20,
                     attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
 
-                var heat = L.heatLayer([
-                    [45.4507879, 4.3859832, 10],
-                    [items[0].lat, items[0].lon, items[0].value],
-                    [items[1].lat, items[1].lon, items[1].value]
-                    ], {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(map);
+                var heatList = [];
+                for (i in items) {
+                    list = [];
+                    list.push(items[i].lat);
+                    list.push(items[i].lon);
+                    list.push(items[i].value);
+                    heatList.push(list);
+                }
+                console.log(heatList);
+
+                var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(map);
 
             });
         })();
