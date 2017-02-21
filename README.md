@@ -2,4 +2,4 @@
 
 work in progress
 
-![](https://github.com/SamR1/OpenCityLab-dataviz/blob/master/docs/snapshot.png)
+![](https://raw.githubusercontent.com/SamR1/OpenCityLab-dataviz/leaflet/docs/snapshot.gif)
