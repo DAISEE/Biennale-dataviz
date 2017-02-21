@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 
 
+
     </head>
 
     <body>
@@ -26,7 +27,8 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -49,6 +51,8 @@
             <div class="starter-template">
                 <h1>Tableau de bord DAISEE</h1>
                 <p class="lead">Heatmap des sources de consommation et production</p>
+                <!-- <p>conso oeuvre 1 : <span id="result">?</span></p>
+                <p><a href="javascript:void();" id="calculate">calculate server side</a> -->
                 <div class="container">
                     <div class="row">
 
@@ -64,25 +68,38 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
 
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{
+          url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 		<script src="static/js/leaflet-heat.js"></script>
 
         <script>
+        (function(){
+            $.getJSON('http://127.0.0.1:5000/get_data/', function (data) {
 
-        var map = L.map('map').setView([45.45114, 4.38660], 18);
-        L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-            attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+                var json = JSON.stringify(data.result);
+                var data = JSON.parse(json);
 
-        var heat = L.heatLayer([
-            [45.4507879, 4.3859832, 5],
-            [45.45154,   4.38458,   1],
-            [45.45201,   4.38487,   2]
-            ], {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(map);
+                console.log(data)
+
+                var map = L.map('map').setView([45.45114, 4.38660], 18);
+                L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    maxZoom: 20,
+                    attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                var heat = L.heatLayer([
+                    [45.4507879, 4.3859832, 10],
+                    [45.45154,   4.38458,   data.oeuvre1],
+                    [45.45201,   4.38487,   data.oeuvre2]
+                    ], {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(map);
+
+            });
+        })();
 
         </script>
-
 
     </body>
 

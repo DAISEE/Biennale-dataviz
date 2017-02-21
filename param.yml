@@ -1,0 +1,16 @@
+listItems: ['oeuvre1','oeuvre2']
+oeuvre1:
+  name:
+  address: ''
+  url: 'http://localhost:8080'
+  sensorId: 1
+  login: ''
+  password: ''
+oeuvre2:
+  name:
+  address: ''
+  url: 'http://192.168.0.4:8080'
+  sensorId: 2
+  login: ''
+  password: ''
+delay: 10
