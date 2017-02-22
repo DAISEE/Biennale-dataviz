@@ -75,34 +75,41 @@
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 		<script src="static/js/leaflet-heat.js"></script>
 
-        <script>
-        (function(){
-            $.getJSON('http://127.0.0.1:5000/get_data/', function (data) {
+        <script type="text/javascript">
 
-                var json = JSON.stringify(data.result);
-                var items = JSON.parse(json);
+            function getData(){
+                $.getJSON('http://127.0.0.1:5000/get_data/', function (data) {
 
-                var map = L.map('map').setView([45.45114, 4.38660], 18);
+                    var json = JSON.stringify(data.result);
+                    var items = JSON.parse(json);
+                    var heatList = [];
+                    for (i in items) {
+                        list = [];
+                        list.push(items[i].lat);
+                        list.push(items[i].lon);
+                        list.push(items[i].value);
+                        heatList.push(list);
+                    }
 
-                L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                    maxZoom: 20,
-                    attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
+                    var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(hGroup);
+                    hGroup.addTo(map);
 
-                var heatList = [];
-                for (i in items) {
-                    list = [];
-                    list.push(items[i].lat);
-                    list.push(items[i].lon);
-                    list.push(items[i].value);
-                    heatList.push(list);
-                }
-                console.log(heatList);
+                });
+            };
 
-                var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(map);
+            var map = L.map('map').setView([45.45114, 4.38660], 18);
 
-            });
-        })();
+            L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                maxZoom: 20,
+                attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            var hGroup = new L.LayerGroup();
+
+            setInterval(function() {
+                var hList = getData();
+                map.removeLayer(hGroup);
+            }, 11000);
 
         </script>
 
