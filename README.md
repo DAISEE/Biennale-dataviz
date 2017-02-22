@@ -2,4 +2,6 @@
 
 work in progress
 
-![](https://github.com/SamR1/OpenCityLab-dataviz/blob/master/docs/snapshot.png)
+![](/docs/snapshot.gif)
+
+![](/docs/heatmap.png)

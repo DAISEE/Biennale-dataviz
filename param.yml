@@ -1,0 +1,35 @@
+listItems: ['oeuvre1','oeuvre2']
+oeuvre1:
+  name: 'Aquaponie'
+  type: 'C'
+  address: ''
+  url: 'http://localhost:8080'
+  sensorId: 1
+  login: ''
+  password: ''
+  lat: 45.4516
+  lon: 4.384551
+  source: 'CW'
+oeuvre2:
+  name: 'ForestDAO'
+  type: 'C'
+  address: ''
+  url: 'http://192.168.0.4:8080'
+  sensorId: 2
+  login: ''
+  password: ''
+  lat: 45.45201
+  lon: 4.38487
+  source: 'CW'
+oeuvre3:
+  name: 'Génératrice'
+  type: 'P'
+  address: ''
+  url: ''
+  sensorId: 
+  login: ''
+  password: ''
+  lat: 45.4507879
+  lon: 4.3859832
+  source: 'OEM'
+delay: 10

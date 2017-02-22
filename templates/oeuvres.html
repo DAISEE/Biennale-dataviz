@@ -36,9 +36,9 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Accueil</a></li>
+                        <li><a href="/">Accueil</a></li>
                         <li><a href="/heatmap">HeatMap</a></li>
-                        <li><a href="/oeuvres">Oeuvres</a></li>
+                        <li class="active"><a href="/oeuvres">Oeuvres</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -47,12 +47,14 @@
         <div class="container">
 
             <div class="starter-template">
-                <h1>Tableau de bord DAISEE</h1>
-                <p class="lead">Suivi des flux d'énergie entre les différentes oeuvres</p>
+                <h1>Oeuvres exposées</h1>
+                <p class="lead">selon leur profil énergétique</p>
                 <div class="container">
                     <div class="row">
 
-                        <div id='map'></div>
+                        <div id='oeuvre'>
+                            <center><img class="img-responsive" src="static/img/oeuvres.jpg"></center>
+                        </div>
 
                     </div>
                 </div>
@@ -63,57 +65,6 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
-
-        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-		<script src="static/js/leaflet.migrationLayer.js"></script>
-
-        <script>
-
-
-        var lrmap = L.map('map').setView([45.45114, 4.38660], 18);
-        L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-            attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(lrmap);
-
-            var data = [{"from":[4.3859832,45.4507879],"to":[4.38458,45.45154],"labels":["Génératrice","Aquaponie"],"color":"#ff3a31"},
-                        {"from":[4.3859832,45.4507879],"to":[4.38487,45.45201],"labels":["Génératrice","ForestDAO"],"color":"#ff7e2b"}];
-            var data2 = [];
-
-        var migrationLayer = new L.migrationLayer({
-            map: lrmap,
-            data: data,
-            pulseRadius:10,
-            pulseBorderWidth:3,
-            arcWidth:1,
-            arcLabel:true,
-            arcLabelFont:'20px sans-serif',
-            }
-        );
-        migrationLayer.addTo(lrmap);
-        function setData(){
-            migrationLayer.setData(data2);
-        }
-        function hide(){
-            migrationLayer.hide();
-        }
-        function show(){
-            migrationLayer.show();
-        }
-        function play(){
-            migrationLayer.play();
-        }
-        function pause(){
-            migrationLayer.pause();
-        }
-        function destroy() {
-            migrationLayer.destroy();
-        }
-
-
-
-
-        </script>
 
 
     </body>
