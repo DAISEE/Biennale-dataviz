@@ -34,7 +34,7 @@ def oeuvres():
 
 @app.route('/get_data/')
 def get_data():
-    # data from API (CW or OEM)
+    # data from API (CW or OEM) => to save data in database
     allData = functions.get_all_data()
     print(allData)
     return jsonify(result=allData)
@@ -42,7 +42,7 @@ def get_data():
 
 @app.route('/get_last_data/')
 def get_ldata():
-    # data from database (SQLite)
+    # data from database (SQLite) => to display data on map
     allData = functions.get_last_data()
     print(allData)
     return jsonify(result=allData)
