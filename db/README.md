@@ -1,0 +1,1 @@
+- Lancer le programme **system/createDatabase.py** pour générer la base de donnés (SQLite)

@@ -9,7 +9,7 @@ import time
 while True:
 
     allData = functions.get_all_data()
-    timesp = time0 = time.time() # TODO : add time1 as parameter
+    timesp = time.time() # TODO : add time1 as parameter
     print(allData)
 
     for item in allData:
