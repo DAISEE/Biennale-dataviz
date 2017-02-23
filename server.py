@@ -17,14 +17,15 @@ app.debug = True
 
 
 @app.route('/')
+@app.route('/heatmap')
 def accueil():
     # TODO : use dynamic data
-    return render_template('index.html')
-
-
-@app.route('/heatmap')
-def heatmap():
     return render_template('heatmap.html')
+
+
+@app.route('/flux')
+def flux():
+    return render_template('flux.html')
 
 
 @app.route('/oeuvres')

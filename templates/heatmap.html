@@ -38,8 +38,8 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="/">Flux</a></li>
                         <li class="active"><a href="#">HeatMap</a></li>
+                        <li><a href="/flux">Flux</a></li>
                         <li><a href="/oeuvres">Oeuvres</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
@@ -79,21 +79,32 @@
 
                     var json = JSON.stringify(data.result);
                     var items = JSON.parse(json);
-                    var heatList = [];
+
+                    var heatListProducer = [];
+                    var heatListConsumer = [];
+
                     for (i in items) {
                         list = [];
                         list.push(items[i].lat);
                         list.push(items[i].lon);
                         list.push(items[i].value);
-                        heatList.push(list);
 
                         var marker = new L.marker([items[i].lat, items[i].lon], { opacity: 0.00 });
-                        marker.bindTooltip((items[i].name+"<br>"+ parseFloat(items[i].value).toFixed(2) +" Wh"), {permanent: true, className: "my-label", offset: [0, 0] });
-                        if (items[i].value = 'C') {marker.addTo(consumer);}
-                        else {marker.addTo(producer);}
+                        marker.bindTooltip(("<strong>"+items[i].name+"</strong><br>"+ parseFloat(items[i].value).toFixed(2) +" Wh"), {permanent: true, className: "my-label", offset: [0, 0] });
+
+                        if (items[i].type == 'C') {
+                            marker.addTo(consumer);
+                            heatListConsumer.push(list);
+                        }
+                        else {
+                            marker.addTo(producer);
+                            heatListProducer.push(list);
+                        }
                     }
 
-                    var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(hGroup);
+                    var heatProducer = L.heatLayer(heatListProducer, {radius: 50}, {gradient: {0.4: 'blue', 0.65: 'lime', 5: 'red'}}).addTo(hGroup);
+                    var heatConsumer = L.heatLayer(heatListConsumer, {radius: 50}, {gradient: {0.4: 'red', 0.65: 'lime', 5: 'blue'}}).addTo(hGroup);
+
                     hGroup.addTo(map);
                     producer.addTo(map);
                     consumer.addTo(map);
@@ -118,7 +129,6 @@
             var hGroup = new L.LayerGroup();
             var producer = new L.LayerGroup();
             var consumer = new L.LayerGroup();
-
 
             var map = L.map('map').setView([45.45114, 4.38660], 18);
 

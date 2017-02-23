@@ -27,7 +27,7 @@ def getkwatthours(url, data, headers, sensorId, t0, t1):
     else:
         parsed_json=json.loads(result.text)
         try:
-            sumEnergy=(parsed_json['data']['value']) * 1000  # /100 for test and debug
+            sumEnergy=(parsed_json['data']['value']) * 10000  # /100 for test and debug
         except Exception as e:
             sumEnergy=0
             print("getkwatthours() - ERROR : json.loads(result.text) \n-> %s" % e)
