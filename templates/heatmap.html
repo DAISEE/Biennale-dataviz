@@ -88,6 +88,10 @@
                         list.push(items[i].lon);
                         list.push(items[i].value);
                         heatList.push(list);
+
+                        var marker = new L.marker([items[i].lat, items[i].lon], { opacity: 0.00 });
+                        marker.bindTooltip((items[i].name+"<br>"+ parseFloat(items[i].value).toFixed(2) +" Wh"), {permanent: true, className: "my-label", offset: [0, 0] });
+                        marker.addTo(hGroup);
                     }
 
                     var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(hGroup);
@@ -121,7 +125,7 @@
 
             setInterval(function() {
                 var hList = getData();
-                map.removeLayer(hGroup);
+                hGroup.clearLayers();
             }, 10000);
 
         </script>
