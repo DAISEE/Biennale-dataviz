@@ -2,6 +2,7 @@
 # #/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+from database import Measure
 import json
 import requests
 import time
@@ -21,19 +22,16 @@ def getkwatthours(url, data, headers, sensorId, t0, t1):
             url + '/api/' + str(sensorId) + '/get/kwatthours/by_time/' + str(t0) + '/' + str(t1),
             headers=headers,
             data=data)
-        print(url + '/api/' + str(sensorId) + '/get/kwatthours/by_time/' + str(t0) + '/' + str(t1))
-        print(result)
-        print(headers)
-        print(data)
     except json.JSONDecodeError as e:
-        print(e)
+        print("getkwatthours() - ERROR : requests.post \n-> %s" % e)
     else:
         parsed_json=json.loads(result.text)
         try:
             sumEnergy=(parsed_json['data']['value']) * 1000  # /100 for test and debug
-        except:
+        except Exception as e:
             sumEnergy=0
-        print("sumEnergy = " + str(sumEnergy))
+            print("getkwatthours() - ERROR : json.loads(result.text) \n-> %s" % e)
+    print("getkwatthours() : " + str(sumEnergy))
     return sumEnergy
 
 
@@ -50,12 +48,10 @@ def get_all_data():
     # getting energy produced or consumed for each item
     headers = {'Content-Type': 'application/json', }
     items = param['listItems']  # items must be defined in param.yml
-    print('items = ' + str(items))
     allData = []
 
     # loop on items to retrieve consumption or production data over the defined interval
     for item in items:
-        print('item = ' + item)
         itemData = {}
         itemData["id"] = item
         itemData["name"] = param[item]['name']
@@ -75,13 +71,39 @@ def get_all_data():
                 value = getkwatthours(itemUrl, data, headers, itemSensorId, time0, time1)
             else:  #TODO: OEM Api
                 value = getkwatthours(itemUrl, data, headers, itemSensorId, time0, time1)
-        except:
+        except Exception as e:
             value=0
-            print("ERROR API (%s)" % itemSource)
+            print("get_all_data() - ERROR : api call (%s) \n-> %s" % (itemSource, e))
 
         itemData["value"] = value
 
         allData.append(itemData.copy())
 
-    print('time : ' + time.strftime("%D %H:%M:%S", time.localtime(int(time1))) + ', allData = ' + str(allData))
+    print('get_all_data(): time : ' + time.strftime("%D %H:%M:%S", time.localtime(int(time1))) + ', allData = '
+          + str(allData))
     return allData
+
+
+def get_last_data():
+
+    items = param['listItems']  # items must be defined in param.yml
+    lastData = []
+
+    for item in items:
+        query = Measure.query.filter_by(item=item).order_by(Measure.timestamp.desc()).first()
+        print(query)
+        itemData = {}
+        itemData["id"] = item
+        itemData["name"] = param[item]['name']
+        itemData["type"] = param[item]['type']
+        itemData["lat"] = param[item]['lat']
+        itemData["lon"] = param[item]['lon']
+        if query is None:
+            itemData["value"] = 0
+        else:
+            itemData["value"] = query.value
+
+        lastData.append(itemData.copy())
+
+    print('get_all_data(): lastData = ' + str(lastData))
+    return lastData

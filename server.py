@@ -34,7 +34,16 @@ def oeuvres():
 
 @app.route('/get_data/')
 def get_data():
+    # data from API (CW or OEM)
     allData = functions.get_all_data()
+    print(allData)
+    return jsonify(result=allData)
+
+
+@app.route('/get_last_data/')
+def get_ldata():
+    # data from database (SQLite)
+    allData = functions.get_last_data()
     print(allData)
     return jsonify(result=allData)
 
