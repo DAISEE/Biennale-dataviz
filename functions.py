@@ -35,6 +35,20 @@ def getkwatthours(url, data, headers, sensorId, t0, t1):
     return sumEnergy
 
 
+def getkwatthoursOem(url, data, headers, sensorId):
+    sumEnergy=0
+    try:
+        result=requests.post(
+            url + '/emoncms/feed/value.json?id=' + str(sensorId) + data,
+            headers=headers,
+            data='')
+    except json.JSONDecodeError as e:
+        print("getkwatthoursOem() - ERROR : requests.post \n-> %s" % e)
+    else:
+        sumEnergy=json.loads(result.text)
+    print("getkwatthours() : " + str(sumEnergy))
+    return sumEnergy
+
 
 def get_all_data():
     # this route collects data from all sensors (connected to each piece of work (=item))
@@ -64,13 +78,15 @@ def get_all_data():
         itemLogin = param[item]['login']
         itemPswd = param[item]['password']
         itemSource = param[item]['source']
-        data = 'login=' + itemLogin + '&password=' + itemPswd
+
 
         try:
             if itemSource == 'CW':
+                data='login=' + itemLogin + '&password=' + itemPswd
                 value = getkwatthours(itemUrl, data, headers, itemSensorId, time0, time1)
-            else:  #TODO: OEM Api
-                value = getkwatthours(itemUrl, data, headers, itemSensorId, time0, time1)
+            else:
+                data='&apikey=' + itemLogin
+                value = getkwatthoursOem(itemUrl, data, headers, itemSensorId)
         except Exception as e:
             value=0
             print("get_all_data() - ERROR : api call (%s) \n-> %s" % (itemSource, e))

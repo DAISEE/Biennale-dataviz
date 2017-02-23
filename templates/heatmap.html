@@ -56,7 +56,7 @@
                         <div id='map'></div>
                     </div>
                 </div>
-                <p><span id="result">en attente de la réception des données</span></p>
+                <p><br><span id="result">en attente de la réception des données</span></p>
             </div>
 
         </div><!-- /.container -->
@@ -90,7 +90,9 @@
                         list.push(items[i].value);
 
                         var marker = new L.marker([items[i].lat, items[i].lon], { opacity: 0.00 });
-                        marker.bindTooltip(("<strong>"+items[i].name+"</strong><br>"+ parseFloat(items[i].value).toFixed(2) +" Wh"), {permanent: true, className: "my-label", offset: [0, 0] });
+                        marker.bindTooltip(("<strong>" + items[i].name + "</strong><br>" +
+                                             parseFloat(items[i].value).toFixed(2) + " kWh"),
+                                            {permanent: true, className: "my-label", offset: [0, 0] });
 
                         if (items[i].type == 'C') {
                             marker.addTo(consumer);
@@ -102,8 +104,14 @@
                         }
                     }
 
-                    var heatProducer = L.heatLayer(heatListProducer, {radius: 50}, {gradient: {0.4: 'blue', 0.65: 'lime', 5: 'red'}}).addTo(hGroup);
-                    var heatConsumer = L.heatLayer(heatListConsumer, {radius: 50}, {gradient: {0.4: 'red', 0.65: 'lime', 5: 'blue'}}).addTo(hGroup);
+                    var heatProducer = L.heatLayer(heatListProducer,
+                                                  {radius: 50},
+                                                  {gradient: {0.4: 'blue', 0.65: 'lime', 5: 'red'}})
+                                                  .addTo(hGroup);
+                    var heatConsumer = L.heatLayer(heatListConsumer,
+                                                  {radius: 50},
+                                                  {gradient: {0.4: 'red', 0.65: 'lime', 5: 'blue'}})
+                                                  .addTo(hGroup);
 
                     hGroup.addTo(map);
                     producer.addTo(map);
@@ -121,8 +129,9 @@
                     if (minute < 10) {minute = "0"+minute;}
                     if (second < 10) {second = "0"+second;}
 
-                    $('#result').text("dermière mise à jour le "+day+"/"+month+"/"+year+" à "+hour+":"+minute+":"+second);
-
+                    $('#result').text("dernière mise à jour le "+ day +"/" + month + "/" + year +
+                                      " à " + hour + ":" + minute + ":" + second);
+                                      
                 });
             };
 
