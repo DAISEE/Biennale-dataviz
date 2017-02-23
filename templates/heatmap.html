@@ -51,14 +51,12 @@
             <div class="starter-template">
                 <h1>Tableau de bord DAISEE</h1>
                 <p class="lead">Heatmap des sources de consommation et production</p>
-                <p><span id="result">en attente de la réception des données</span></p>
                 <div class="container">
                     <div class="row">
-
                         <div id='map'></div>
-
                     </div>
                 </div>
+                <p><span id="result">en attente de la réception des données</span></p>
             </div>
 
         </div><!-- /.container -->
@@ -91,41 +89,60 @@
 
                         var marker = new L.marker([items[i].lat, items[i].lon], { opacity: 0.00 });
                         marker.bindTooltip((items[i].name+"<br>"+ parseFloat(items[i].value).toFixed(2) +" Wh"), {permanent: true, className: "my-label", offset: [0, 0] });
-                        marker.addTo(hGroup);
+                        if (items[i].value = 'C') {marker.addTo(consumer);}
+                        else {marker.addTo(producer);}
                     }
 
                     var heat = L.heatLayer(heatList, {radius: 50}, {0.4: 'blue', 0.65: 'lime', 5: 'red'}).addTo(hGroup);
                     hGroup.addTo(map);
+                    producer.addTo(map);
+                    consumer.addTo(map);
 
                     var now = new Date();
-                    var annee   = now.getFullYear();
-                    var mois    = now.getMonth() + 1;
-                    var jour    = now.getDate();
-                    var heure   = now.getHours();
+                    var year = now.getFullYear();
+                    var month = now.getMonth() + 1;
+                    var day = now.getDate();
+                    var hour = now.getHours();
                     var minute  = now.getMinutes();
-                    var seconde = now.getSeconds();
-                    if (mois < 10) {mois = "0"+mois;}
-                    if (heure < 10) {heure = "0"+heure;}
+                    var second = now.getSeconds();
+                    if (month < 10) {month = "0"+month;}
+                    if (hour < 10) {hour = "0"+hour;}
                     if (minute < 10) {minute = "0"+minute;}
-                    if (seconde < 10) {seconde = "0"+seconde;}
+                    if (second < 10) {second = "0"+second;}
 
-                    $('#result').text("dermière mise à jour le "+jour+"/"+mois+"/"+annee+" à "+heure+":"+minute+":"+seconde);
+                    $('#result').text("dermière mise à jour le "+day+"/"+month+"/"+year+" à "+hour+":"+minute+":"+second);
 
                 });
             };
+
+            var hGroup = new L.LayerGroup();
+            var producer = new L.LayerGroup();
+            var consumer = new L.LayerGroup();
+
 
             var map = L.map('map').setView([45.45114, 4.38660], 18);
 
             L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                 maxZoom: 20,
-                attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                layers: [hGroup, producer, consumer]
             }).addTo(map);
 
-            var hGroup = new L.LayerGroup();
+            var baseLayers = {
+                "Données énergétiques": hGroup
+            };
+            var overlays = {
+                "Producteurs": producer,
+                "Consommateurs": consumer
+            };
+
+            L.control.layers(baseLayers, overlays).addTo(map);
 
             setInterval(function() {
                 var hList = getData();
                 hGroup.clearLayers();
+                producer.clearLayers();
+                consumer.clearLayers();
             }, 10000);
 
         </script>
