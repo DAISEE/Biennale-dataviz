@@ -4,6 +4,7 @@
 
 from flask import Flask, render_template, jsonify
 import functions
+import subprocess
 import yaml
 
 with open("param.yml", 'r') as stream:
@@ -11,6 +12,9 @@ with open("param.yml", 'r') as stream:
         param = yaml.load(stream)
     except yaml.YAMLError as e:
         print(e)
+
+# data processing from APIs (data are saved in SQLite database)
+subprocess.Popen(["python3", "process.py"])
 
 app = Flask(__name__)
 app.debug = True
