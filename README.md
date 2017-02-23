@@ -2,6 +2,6 @@
 
 work in progress
 
-![](/docs/snapshot.gif)
+![](/docs/heatmap.gif)
 
-![](/docs/heatmap.png)
+![](/docs/snapshot.gif)
