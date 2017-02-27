@@ -74,8 +74,11 @@
 
         <script type="text/javascript">
 
+            var ip = location.host;
+
             function getData(){
-                $.getJSON('http://127.0.0.1:5000/get_last_data/', function (data) {
+                $.getJSON('http://' + ip  + '/get_last_data/', function (data) {
+
 
                     var json = JSON.stringify(data.result);
                     var items = JSON.parse(json);
@@ -139,7 +142,7 @@
             var producer = new L.LayerGroup();
             var consumer = new L.LayerGroup();
 
-            var map = L.map('map').setView([45.45114, 4.38660], 18);
+            var map = L.map('map').setView([45.45177, 4.38484], 19);
 
             L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                 maxZoom: 20,
