@@ -2,16 +2,26 @@
 # #/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+from database import db
 from flask import Flask, render_template, jsonify
 import functions
 import subprocess
 import yaml
 
-with open("param.yml", 'r') as stream:
+
+with open('param.yml', 'r') as stream:
     try:
         param = yaml.load(stream)
     except yaml.YAMLError as e:
         print(e)
+
+try:
+    with open('db/measures.db'):
+        pass
+except IOError:
+    db.create_all()
+    print("database creation")
+
 
 # data processing from APIs (data are saved in SQLite database)
 subprocess.Popen(["python3", "process.py"])

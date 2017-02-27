@@ -1,1 +1,1 @@
-- Lancer le programme **system/createDatabase.py** pour générer la base de donnés (SQLite)
+- La base de donnés (SQLite) est créée au lancement du serveur, si elle n'existe pas
