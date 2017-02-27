@@ -1,4 +1,4 @@
-# OpenCityLab-dataviz
+# biennale-dataviz
 
 work in progress
 
