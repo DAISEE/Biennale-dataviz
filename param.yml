@@ -10,6 +10,7 @@ oeuvre1:
   lat: 45.4516
   lon: 4.384551
   source: 'CW'
+  flux: []
 oeuvre2:
   name: 'ForestDAO'
   type: 'C'
@@ -21,6 +22,7 @@ oeuvre2:
   lat: 45.45201
   lon: 4.38487
   source: 'CW'
+  flux: []
 oeuvre3:
   name: 'Génératrice'
   type: 'P'
@@ -32,4 +34,5 @@ oeuvre3:
   lat: 45.4507879
   lon: 4.3859832
   source: 'OEM'
+  flux: []
 delay: 10

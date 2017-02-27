@@ -63,5 +63,14 @@ def get_ldata():
     return jsonify(result=allData)
 
 
+@app.route('/get_flux_data/')
+def get_fdata():
+    # data from database (SQLite) => to display data on map
+    allData = functions.get_flux_data()
+    print(allData)
+    return jsonify(result=allData)
+
+
+
 if __name__ == '__main__':
     app.run()

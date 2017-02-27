@@ -69,49 +69,58 @@
 
         <script>
 
+        var ip = location.host;
 
-        var lrmap = L.map('map').setView([45.45114, 4.38660], 18);
-        L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-            attribution: '&copy; Openstreetmap France | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(lrmap);
+        function getData(){
+            $.getJSON('http://' + ip  + '/get_flux_data/', function (data) {
+                var json = JSON.stringify(data.result);
+                var data = JSON.parse(json);
+                var data2 = [];
 
-            var data = [{"from":[4.3859832,45.4507879],"to":[4.38458,45.45154],"labels":["Génératrice","Aquaponie"],"color":"#ff3a31"},
-                        {"from":[4.3859832,45.4507879],"to":[4.38487,45.45201],"labels":["Génératrice","ForestDAO"],"color":"#ff7e2b"}];
-            var data2 = [];
-
-        var migrationLayer = new L.migrationLayer({
-            map: lrmap,
-            data: data,
-            pulseRadius:10,
-            pulseBorderWidth:3,
-            arcWidth:1,
-            arcLabel:true,
-            arcLabelFont:'20px sans-serif',
-            }
-        );
-        migrationLayer.addTo(lrmap);
-        function setData(){
-            migrationLayer.setData(data2);
-        }
-        function hide(){
-            migrationLayer.hide();
-        }
-        function show(){
-            migrationLayer.show();
-        }
-        function play(){
-            migrationLayer.play();
-        }
-        function pause(){
-            migrationLayer.pause();
-        }
-        function destroy() {
-            migrationLayer.destroy();
-        }
+                var migrationLayer = new L.migrationLayer({
+                    map: lrmap,
+                    data: data,
+                    pulseRadius:10,
+                    pulseBorderWidth:3,
+                    arcWidth:1,
+                    arcLabel:true,
+                    arcLabelFont:'20px sans-serif',
+                    }
+                );
+                migrationLayer.addTo(lrmap);
+                function setData(){
+                    migrationLayer.setData(data2);
+                }
+                function hide(){
+                    migrationLayer.hide();
+                }
+                function show(){
+                    migrationLayer.show();
+                }
+                function play(){
+                    migrationLayer.play();
+                }
+                function pause(){
+                    migrationLayer.pause();
+                }
+                function destroy() {
+                    migrationLayer.destroy();
+                }
 
 
+            });
 
+
+        };
+
+        var lrmap = L.map('map').setView([45.45091,4.38711], 19);
+        L.tileLayer('https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey={apikey}', {
+                attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 22,
+                apikey: '{apikey}'
+            }).addTo(lrmap);
+
+        var flux = getData();
 
         </script>
 

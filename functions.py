@@ -51,7 +51,7 @@ def getkwatthoursOem(url, data, headers, sensorId):
 
 
 def get_all_data():
-    # this route collects data from all sensors (connected to each piece of work (=item))
+    # this function collects data from all sensors (connected to each piece of work (=item))
 
     # definition of the time interval, in order to collect data
     time0 = time.time()
@@ -123,3 +123,26 @@ def get_last_data():
 
     print('get_all_data(): lastData = ' + str(lastData))
     return lastData
+
+
+def get_flux_data():
+
+    items=param['listItems']  # items must be defined in param.yml
+    fluxData=[]
+
+    for item in items:
+        if param[item]['flux'] is not None:
+            for item2 in param[item]['flux']:
+                itemData={}
+                fr = str(param[item]['lon']) + ',' + str(param[item]['lat'])
+                to = str(param[item2]['lon']) + ',' + str(param[item2]['lat'])
+                nm = param[item]['name'] + ',' + param[item2]['name']
+                itemData["from"] = fr.split(',')
+                itemData["to"] = to.split(',')
+                itemData["labels"] = nm.split(',')
+                itemData["color"] = "#ff3a31"
+
+                fluxData.append(itemData.copy())
+
+    print('get_flux_data(): lastData = ' + str(fluxData))
+    return fluxData
